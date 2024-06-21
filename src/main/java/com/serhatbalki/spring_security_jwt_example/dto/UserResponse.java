@@ -12,7 +12,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserResponse {
 
-    private String token;
+    private String accessToken;
+
+    private String refreshToken;
 
     private Role role;
 }

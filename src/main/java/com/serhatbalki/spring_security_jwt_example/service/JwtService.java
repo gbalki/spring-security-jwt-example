@@ -1,5 +1,6 @@
 package com.serhatbalki.spring_security_jwt_example.service;
 
+import com.serhatbalki.spring_security_jwt_example.entity.User;
 import io.jsonwebtoken.Claims;
 
 import io.jsonwebtoken.Jwts;
@@ -44,12 +45,21 @@ public class JwtService {
         return (username.equals(userDetails.getUsername()) && !exportToken(jwt, Claims::getExpiration).before(new Date()));
     }
 
-    public String generateToken(UserDetails user) {
+    public String generateAccessToken(UserDetails user) {
+        return Jwts.builder()
+                .setSubject(user.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+                .signWith(getKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    public String generateRefreshToken(UserDetails user) {
         return Jwts.builder()
                 .setClaims(new HashMap<>())
                 .setSubject(user.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+                .setExpiration(new Date(System.currentTimeMillis() + 604800016))
                 .signWith(getKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
