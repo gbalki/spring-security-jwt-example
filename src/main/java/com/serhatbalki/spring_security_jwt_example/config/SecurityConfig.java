@@ -28,6 +28,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers("/login/**").permitAll()
                 .requestMatchers("/dashboard/**").hasAuthority("ADMIN")
+                .requestMatchers("/login/logout").authenticated()
                 .anyRequest()
                 .authenticated()
                 .and()
